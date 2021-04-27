@@ -10,20 +10,19 @@
 </head>
 <body>
     <header>
-        <img id="headimg" src="/img/maybelline.jpg" alt="">
-        <div class="classa">
+        <img src="/img/maybelline.jpg" alt="">
         <a href="/">Home</a>
         <a href="/getall">All products</a>
         <a href="/getdatabase">My products</a>
-    </div>
     </header>
     <section>
-        <form id="homeform" action="/getdata">
-            <input type="text" name="search" placeholder="Add Brand Name" >
-            <input type="text" name="greater" placeholder="price greater than">
-            <input type="text" name="less" placeholder="price lower than">
-            <button>Search</button>
-        </form>
+        <% productsArr.forEach(items => { %>
+            <img src="<%= items.image_link %>" alt="">
+            <h2><%= items.name %></h2>
+            <h4><%= items.price %></h4>
+            <a href="/details/<%=items.id%>">View Details</a>
+        <% }); %>
     </section>
 </body>
 </html>
+

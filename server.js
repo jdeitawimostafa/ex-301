@@ -28,110 +28,94 @@ server.set('view engine', 'ejs');
 
 
 
-const client = new pg.Client({ connectionString: process.env.DATABASE_URL,   ssl: process.env.DEV_MODE ? false : { rejectUnauthorized: false } }); 
+const client = new pg.Client({ connectionString: process.env.DATABASE_URL, ssl: process.env.DEV_MODE ? false : { rejectUnauthorized: false } });
 
 server.get('/test',(req,res) => {
-    res.send('your server ready to use mostafa 2');
+  res.send('your server ready to use mostafa');
 });
 
 server.get('/',(req,res) => {
-    let covidUrl = `https://api.covid19api.com/world/total`;
-    superagent.get(covidUrl)
-    .then(items => {
-
-        let gettedData = items.body;
-        // return new Covid (gettedData);
-        res.render('home',{itemsArr:gettedData})
-    }); 
-});
-
-server.get('/getresult',(req,res) => {
-    let countryName = req.query.country;
-    let from = req.query.from;
-    let to = req.query.to;
-    let countryurl = `https://api.covid19api.com/country/${countryName}/status/confirmed?from=${from}&to=${to}`;
-
-    superagent.get(countryurl)
-    .then(data => {
-
-        let gettedData = data.body;
-        console.log('country', gettedData);
-        let result = gettedData.map(items => {
-            return new Country (items);
-         
-        });
-        console.log('mostafa',result);
-        res.render('getCountryResult',{countryArr:result});
-    });
-});
-
-function Country(data) {
-    this.cases = data.Cases;
-    this.date = data.Date;
-}
-
-server.get('/allcountries',(req,res) => {
-    let allurl = `https://api.covid19api.com/summary`;
-
-    superagent.get(allurl)
-    .then(data => {
-        let gettedData1 = data.body.Countries;
-        console.log('country', gettedData1);
-        let result1 = gettedData1.map(items => {
-            return new  All (items);
-    });
-    res.render('AllCountries',{allArr:result1});
-});
-});
-
-
-function All(alldata) {
-    this.country = alldata.Country;
-    this.totalconfirmed = alldata.TotalConfirmed;
-    this.totaldeaths = alldata.TotalDeaths;
-    this.totalrecovered = alldata.TotalRecovered;
-    this.date = alldata.Date;
-}
-
-server.get('/database',(req,res) => {
-    let {country,totalconfirmed,totaldeaths,totalrecovered,Date} = req.query;
-    let saveVal = [country,totalconfirmed,totaldeaths,totalrecovered,Date]
-    let sql = 'insert into coviddata (country,totalconfirmed,totaldeaths,totalrecovered,Date) values ($1,$2,$3,$4,$5) returning *';
-    client.query(sql,saveVal)
-    .then( res.redirect('/getdata'));
+  res.render('home');
 });
 
 server.get('/getdata',(req,res) => {
-    let sql = 'select * from coviddata';
-    client.query(sql)
+  let greater = req.query.greater;
+  let lower = req.query.less;
+  let url = `http://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline&price_greater_than=${greater}&price_less_than=${lower}`;
+
+  superagent.get(url)
     .then(data => {
-        res.render('Myrecords',{recordsArr:data.rows})
+      let gettedData = data.body;
+      let result = gettedData.map(items => {
+        return new Maybelline (items);
+      });
+      res.render('ProductByPricepage',{dataArr:result});
     });
 });
 
-server.get('/getdetails/:id',(req,res) => {
-    let saveVal = [req.params.id];
-    let sql = 'select * from coviddata where id=$1';
-    client.query(sql,saveVal)
-    .then(items => {
-        res.render('RecordDetails',{detailsArr:items.rows[0]});
-    }); 
+server.get('/getall',(req,res) => {
+  let url = `http://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline`;
+  superagent.get(url)
+    .then(data => {
+      let gettedData = data.body;
+      let result1 = gettedData.map(items => {
+        return new Maybelline (items);
+      });
+      res.render('Allproducts',{allArr:result1});
+    });
+});
+
+server.get('/database',(req,res) => {
+  let {name,price,image_link,description} = req.query;
+  let saveVal = [name,price,image_link,description];
+  let sql = 'insert into maybedata (name,price,image_link,description) values ($1,$2,$3,$4)';
+  client.query(sql,saveVal)
+    .then( res.redirect('/getdatabase'));
+
+});
+
+server.get('/getdatabase',(req,res) => {
+  let sql = 'select * from maybedata';
+  client.query(sql)
+    .then(data => {
+      res.render('Myproducts',{productsArr:data.rows});
+    });
+});
+
+server.get('/details/:id',(req,res) => {
+  let saveVal = [req.params.id];
+  let sql = 'select * from maybedata where id=$1';
+  client.query(sql,saveVal)
+    .then(data => {
+      res.render('productsdetails',{detailsArr:data.rows[0]});
+    });
 });
 
 server.put('/update/:id',(req,res) => {
-    let sql = 'update coviddata set country=$1,totalconfirmed=$2,totaldeaths=$3,totalrecovered=$4,date=$5 where id=$6';
-    let {country,totalconfirmed,totaldeaths,totalrecovered,date} = req.body;
-    let saveVal = [country,totalconfirmed,totaldeaths,totalrecovered,date,req.params.id]
-    client.query(sql,saveVal)
-    .then(res.redirect(`/getdetails/${req.params.id}`));
+  let {name,price,image_link,description} = req.body;
+  let saveValues = [name,price,image_link,description,req.params.id];
+  let sql = 'update maybedata set name=$1,price=$2,image_link=$3,description=$4 where id=$5';
+  client.query(sql,saveValues)
+    .then(
+      res.redirect(`/details/${req.params.id}`));
 });
 
 server.delete('/delete/:id',(req,res) => {
-    let saveVal = [req.params.id]
-    let sql = 'delete from coviddata where id=$1'
-    client.query(sql,saveVal)
-    .then(res.redirect('/getdata'));
+  let sql = 'delete from maybedata where id=$1';
+  let saveValues = [req.params.id];
+  client.query(sql,saveValues)
+    .then(res.redirect('/getdatabase'));
 });
+
+
+
+function Maybelline(key) {
+  this.name = key.name;
+  this.price = key.price;
+  this.image_link = key.image_link;
+  this.description = key.description;
+}
+
 
 
 
@@ -142,4 +126,4 @@ client.connect()
     server.listen(PORT,()=>{
       console.log(`listening to port ${PORT}`);
     });
- });
+  });

@@ -1,0 +1,29 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    margin: auto;
+}
+
+#headimg {
+    width: 100%;
+}
+
+.classa {
+width: 100%;
+margin-left: 300px;
+}
+
+#homeform {
+    margin-left: 300px;
+    margin-top: 80px;
+}
+
+#products {
+    width: 100%;
+    /* display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px; */
+}

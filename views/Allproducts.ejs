@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <img src="/img/maybelline.jpg" alt="">
+        <a href="/">Home</a>
+        <a href="/getall">All products</a>
+        <a href="/getdatabase">My products</a>
+    </header>
+    <section id="products">
+        <% allArr.forEach(items => { %>
+            <img src="<%= items.image_link %>" alt="">
+            <h2><%= items.name %></h2>
+            <h4><%= items.price %></h4>
+            <p><%= items.description %></p>
+
+            <form action="/database">
+            <input type="hidden" name="name" value="<%= items.name %>">
+            <input type="hidden" name="price" value="<%= items.price %>">
+            <input type="hidden" name="image_link" value="<%= items.image_link %>">
+            <input type="hidden" name="description" value="<%= items.description %>">
+            <button>Add to card</button>
+            </form>
+        <% }); %>
+    </section>
+</body>
+</html>

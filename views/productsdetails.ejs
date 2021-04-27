@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <img src="/img/maybelline.jpg" alt="">
+        <a href="/">Home</a>
+        <a href="/getall">All products</a>
+        <a href="/getdatabase">My products</a>
+    </header>
+    <section>
+      
+            <img src="<%= detailsArr.image_link %>" alt="">
+            <h2><%= detailsArr.name %></h2>
+            <h4><%= detailsArr.price %></h4>
+            <p><%= detailsArr.description %></p>
+
+            <button id="update">Update</button>
+            <form id="form" action="/update/<%=detailsArr.id%>?_method=put" method="POST">
+                <input type="text" name="name" value="<%= detailsArr.name %>">
+                <input type="text" name="price" value="<%= detailsArr.price %>">
+                <input type="text" name="image_link" value="<%= detailsArr.image_link %>">
+                <input type="text" name="description" value="<%= detailsArr.description %>">
+                <button>Update Now</button>
+            </form>
+
+            <form action="/delete/<%=detailsArr.id%>?_method=delete" method="POST">
+            <button>Delete</button></form>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="../js/app.js"></script>
+</body>
+</html>

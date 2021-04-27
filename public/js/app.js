@@ -1,8 +1,7 @@
 'use strict';
-console.log('hello tamara ');
+
+console.log('hello mostafa');
 $('#form').hide();
 $('#update').on('click',function(){
-    $('#form').toggle();
-    // $('#update').hide();
+  $('#form').toggle();
 });
-$('#form').hide();

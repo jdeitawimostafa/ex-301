@@ -1,10 +1,9 @@
-DROP TABLE IF EXISTS coviddata;
+DROP TABLE IF EXISTS maybedata;
 
-CREATE TABLE coviddata (
+CREATE TABLE maybedata (
     id SERIAL PRIMARY KEY,
-     country VARCHAR(255),
-     totalconfirmed VARCHAR(255),
-     totaldeaths VARCHAR(255),
-     totalrecovered VARCHAR(255),
-     date VARCHAR(255) 
+    name VARCHAR(255),
+    price VARCHAR(255),
+    image_link VARCHAR(255),
+    description TEXT
 );
