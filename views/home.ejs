@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covid</title>
+</head>
+<header>
+    <a href="/allcountries">All countries</a>
+</header>
+<body>
+    <section>
+            <h2>TotalConfirmed : <%= itemsArr.TotalConfirmed %></h2>
+            <h2> TotalDeaths : <%= itemsArr.TotalDeaths %></h3>
+            <h2> TotalRecovered :<%= itemsArr.TotalRecovered %></h4>
+    </section>
+
+    <section>
+        <form action="/getresult">
+            <input type="text" name="country">
+            <input type="date" name="from">
+            <input type="date" name="to">
+            <button>Search</button>
+        </form>
+    </section>
+</body>
+</html>

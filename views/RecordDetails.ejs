@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <section>
+        
+        <h3> Country :  <%= detailsArr.country %></h3>
+        <h3> TotalConfirmed  : <%= detailsArr.totalconfirmed %></h3>
+        <h3> TotalDeaths  : <%= detailsArr.totaldeaths %></h3>
+        <h3> TotalRecovered :<%= detailsArr.totalrecovered %></h3>
+        <h3> Date :  <%= detailsArr.date %> </h3>
+        <button id="update">Update</button>
+        <form id="form" action="/update/<%=detailsArr.id%>?_method=put" method="POST">
+            <input type="text" name="country" value="<%= detailsArr.country %>">
+            <input type="text" name="totalconfirmed" value="<%= detailsArr.totalconfirmed %>">
+            <input type="text" name="totaldeaths" value="<%= detailsArr.totaldeaths %>">
+            <input type="text" name="totalrecovered" value="<%= detailsArr.totalrecovered %>">
+            <input type="text" name="date" value="<%= detailsArr.date %>">
+            <button id="formBtn">Update Now</button>
+        </form>
+
+        <form action="/delete/<%=detailsArr.id%>?_method=delete" method="POST">
+            <button>Delete</button>
+        </form>
+    </section>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="../js/app.js"></script>
+</html>
